@@ -4,72 +4,60 @@ public class calculator {
     
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
-            double num1 = 0;
-            double result = 0;
-            boolean isFirstRun = true;
-            boolean keepRunning = true;
+        System.out.println("--- Simple Calculator ---");
+        System.out.println("Enter a number, an operator (+, -, *, /), or 'C' to clear, or 'X' to exit");
+        
+        double currentDisplay = 0;
+        boolean isFirstInput = true;
+        
+        while (true) {
+            String input = scanner.next();
 
-            while (keepRunning) {
-                if (isFirstRun) {
-                    System.out.print("Enter first number: ");
-                    num1 = scanner.nextDouble();
-                    isFirstRun = false;
-                } else {
-                    System.out.print("Use previous result (" + result + ") as first number? (y/n): ");
-                    char choice = scanner.next().charAt(0);
+            if (input.equalsIgnoreCase("X")) {
+                System.out.println("Exiting calculator.");
+                break;
+            }
 
-                    if (choice == 'y' || choice == 'Y') {
-                        num1 = result;
-                    } else {
-                        System.out.print("Enter first number: ");
-                        num1 = scanner.nextDouble();
-                    }
-                    }
-                 
-                 System.out.print("Enter an operator (+, -, *, /): ");
-                 char operator = scanner.next().charAt(0);
+            if (input.equalsIgnoreCase("C")) {
+                currentDisplay = 0;
+                isFirstInput = true;
+                System.out.println(currentDisplay);
+                continue;
+            }
+            if (isFirstInput) {
+                currentDisplay = Double.parseDouble(input);
+                isFirstInput = false;
+                System.out.println(currentDisplay);
+            } else {
+                char operator = input.charAt(0);
 
-                 System.out.print("Enter second number: ");
-                 double num2 = scanner.nextDouble();
+                double nextNumber = scanner.nextDouble();
 
-                 switch (operator) {
+                switch (operator) {
                     case '+':
-                        result = num1 + num2;
-                        System.out.println("Result: " + num1 + " + " + num2 + " = " + result);
+                        currentDisplay = currentDisplay + nextNumber;
                         break;
                     case '-':
-                        result = num1 - num2;
-                        System.out.println("Result: " + num1 + " - " + num2 + " = " + result);
+                        currentDisplay = currentDisplay - nextNumber;
                         break;
                     case '*':
-                        result = num1 * num2;
-                        System.out.println("Result: " + num1 + " * " + num2 + " = " + result);
+                        currentDisplay = currentDisplay * nextNumber;
                         break;
                     case '/':
-                        if (num2 != 0) {
-                            result = num1 / num2;
-                            System.out.println("Result: " + num1 + " / " + num2 + " = " + result);
+                        if (nextNumber != 0) {
+                            currentDisplay = currentDisplay / nextNumber;
                         } else {
-                            System.out.println("Undefined");
+                            System.out.println("Error: Division by zero.");
                         }
                         break;
                     default:
                         System.out.println("Error: Invalid operator.");
-                        isFirstRun = true;
-                        break;
-                 }
-                 
-                 System.out.println();
-
-                 System.out.print("Do you want to perform another calculation? (y/n): ");
-                 char goAgain = scanner.next().charAt(0);
-                 if (goAgain == 'n' || goAgain == 'N') {
-                    keepRunning = false;
-                    System.out.println("Bye!");
-                 }
+                        continue;
                 }
-           
-            
+                System.out.println(currentDisplay);
             }
-    }   
+            }
+        }
+    }
 }
+        
